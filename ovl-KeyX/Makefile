@@ -36,6 +36,7 @@ SOURCES		:=	source \
 				source/common \
 				source/update \
 				libs/libultrahand/libultra/source \
+				libs/libultrahand/libtesla/source \
 				libs/libultrahand/common \
 				libs/lib-QR-Code-generator
 DATA		:=	data
