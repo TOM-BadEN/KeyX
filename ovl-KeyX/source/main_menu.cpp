@@ -39,7 +39,12 @@ static MappingDef::ButtonMapping s_buttonMappings[MappingDef::BUTTON_COUNT] = {
 };
 
 static constexpr const char* s_switchText[] = {"已关闭", "已开启"};
-static const tsl::Color s_switchColor[] = {tsl::Color(0xF, 0x7, 0x7, 0xF), tsl::onTextColor};
+
+// 根据开关状态读取当前颜色，避免在主题初始化前缓存开启颜色。
+// 参数 isEnabled：功能是否开启；返回值：开启时的当前主题色，或关闭时的红色。
+static tsl::Color getSwitchColor(bool isEnabled) {
+    return isEnabled ? tsl::onTextColor : tsl::Color(0xF, 0x7, 0x7, 0xF);
+}
 
 void MainMenu::RefreshData() {
     u64 currentTitleId = GameMonitor::getCurrentTitleId();
@@ -60,15 +65,15 @@ void MainMenu::RefreshData() {
     // 更新功能开关
     if (m_AutoFireEnableItem != nullptr) {
         m_AutoFireEnableItem->setValue(s_switchText[m_KeyXinfo.isAutoFireEnabled]);
-        m_AutoFireEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoFireEnabled]);
+        m_AutoFireEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoFireEnabled));
     }
     if (m_AutoRemapEnableItem != nullptr) {
         m_AutoRemapEnableItem->setValue(s_switchText[m_KeyXinfo.isAutoRemapEnabled]);
-        m_AutoRemapEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoRemapEnabled]);
+        m_AutoRemapEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoRemapEnabled));
     }
     if (m_AutoMacroEnableItem != nullptr) {
         m_AutoMacroEnableItem->setValue(s_switchText[m_KeyXinfo.isAutoMacroEnabled]);
-        m_AutoMacroEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoMacroEnabled]);
+        m_AutoMacroEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoMacroEnabled));
     }
 
     // 读取按钮掩码值用于绘制按钮图标
@@ -103,7 +108,7 @@ void MainMenu::AutoKeyToggle() {
     // 切换状态，开变关-关变开
     m_KeyXinfo.isAutoFireEnabled = !m_KeyXinfo.isAutoFireEnabled;
     m_AutoFireEnableItem->setValue(s_switchText[m_KeyXinfo.isAutoFireEnabled]);
-    m_AutoFireEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoFireEnabled]);
+    m_AutoFireEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoFireEnabled));
     IniHelper::setBool("AUTOFIRE", "globconfig", m_KeyXinfo.isGlobalConfig, m_KeyXinfo.GameConfigPath);
     IniHelper::setBool("AUTOFIRE", "autoenable", m_KeyXinfo.isAutoFireEnabled, m_KeyXinfo.GameConfigPath);
     IniHelper::setBool("AUTOFIRE", "autoenable", m_KeyXinfo.isAutoFireEnabled, CONFIG_PATH);
@@ -118,7 +123,7 @@ void MainMenu::AutoRemapToggle() {
     // 切换状态，开变关-关变开
     m_KeyXinfo.isAutoRemapEnabled = !m_KeyXinfo.isAutoRemapEnabled;
     m_AutoRemapEnableItem->setValue(s_switchText[m_KeyXinfo.isAutoRemapEnabled]);
-    m_AutoRemapEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoRemapEnabled]);
+    m_AutoRemapEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoRemapEnabled));
     IniHelper::setBool("AUTOFIRE", "globconfig", m_KeyXinfo.isGlobalConfig, m_KeyXinfo.GameConfigPath);
     IniHelper::setBool("MAPPING", "autoenable", m_KeyXinfo.isAutoRemapEnabled, m_KeyXinfo.GameConfigPath);
     IniHelper::setBool("MAPPING", "autoenable", m_KeyXinfo.isAutoRemapEnabled, CONFIG_PATH);
@@ -133,7 +138,7 @@ void MainMenu::AutoMacroToggle() {
     // 切换状态，开变关-关变开
     m_KeyXinfo.isAutoMacroEnabled = !m_KeyXinfo.isAutoMacroEnabled;
     m_AutoMacroEnableItem->setValue(s_switchText[m_KeyXinfo.isAutoMacroEnabled]);
-    m_AutoMacroEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoMacroEnabled]);
+    m_AutoMacroEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoMacroEnabled));
     IniHelper::setBool("MACRO", "autoenable", m_KeyXinfo.isAutoMacroEnabled, m_KeyXinfo.GameConfigPath);
 }
 
@@ -335,7 +340,7 @@ tsl::elm::Element* MainMenu::createUI()
     // ============= 下半部分：列表区域 =============
     // 创建开启连发列表项
     m_AutoFireEnableItem = new tsl::elm::ListItem("按键连发", s_switchText[m_KeyXinfo.isAutoFireEnabled]);
-    m_AutoFireEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoFireEnabled]);
+    m_AutoFireEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoFireEnabled));
     m_AutoFireEnableItem->setClickListener([this](u64 keys) {
         if (keys & HidNpadButton_A) {
             AutoKeyToggle();
@@ -346,7 +351,7 @@ tsl::elm::Element* MainMenu::createUI()
     mainList->addItem(m_AutoFireEnableItem);
 
     m_AutoRemapEnableItem = new tsl::elm::ListItem("按键映射", s_switchText[m_KeyXinfo.isAutoRemapEnabled]);
-    m_AutoRemapEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoRemapEnabled]);
+    m_AutoRemapEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoRemapEnabled));
     m_AutoRemapEnableItem->setClickListener([this](u64 keys) {
         if (keys & HidNpadButton_A) {
             AutoRemapToggle();
@@ -358,7 +363,7 @@ tsl::elm::Element* MainMenu::createUI()
 
     // 创建设置列表项
     m_AutoMacroEnableItem = new tsl::elm::ListItem("按键脚本", s_switchText[m_KeyXinfo.isAutoMacroEnabled]);
-    m_AutoMacroEnableItem->setValueColor(s_switchColor[m_KeyXinfo.isAutoMacroEnabled]);
+    m_AutoMacroEnableItem->setValueColor(getSwitchColor(m_KeyXinfo.isAutoMacroEnabled));
     m_AutoMacroEnableItem->setClickListener([this](u64 keys) {
         if (keys & HidNpadButton_A) {
             AutoMacroToggle();
