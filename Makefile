@@ -6,7 +6,7 @@
 .PHONY: all clean ovl sys notif prepare-out show-result check update zip
 
 # 从 ovl-KeyX/Makefile 读取版本号
-VERSION := $(shell grep -oP 'APP_VERSION\s*:=\s*\K[^\s]+' ovl-KeyX/Makefile)
+VERSION := $(shell awk '/^APP_VERSION[[:space:]]*:=/ {print $$3; exit}' ovl-KeyX/Makefile)
 
 # 模块目录
 OVL_DIR := ovl-KeyX
