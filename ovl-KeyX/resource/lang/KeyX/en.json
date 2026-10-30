@@ -23,7 +23,7 @@
     " • 可自定义连发速度和间隔": " • Custom speed",
     " • 提供全局和游戏专用配置": " • Global & per-game",
     "内存占用：": "Memory:",
-    " • 系统模块内存仅占用 550 KB": " • SysModule 550 KB",
+    " • 系统模块内存约占用 1.06 MB": " • SysModule ~1.06 MB",
     " • 通知弹窗触发时占用 688 KB": " • Notif 688 KB",
     " • 通知弹窗仅在触发时占用内存": " • Notif only While shown",
     "感谢使用本插件！": "Thank you!",

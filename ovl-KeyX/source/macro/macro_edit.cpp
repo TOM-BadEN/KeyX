@@ -393,7 +393,7 @@ void MacroEditGui::drawDurationEditArea(tsl::gfx::Renderer* r, s32 x, s32 y, s32
     auto& actions = MacroData::getActions();
     s32 currentActionMs = actions[m_menuSelStart].duration;
     s32 totalMs = MacroData::getBasicInfo().durationMs;
-    s32 maxEditMs = 30000 - (totalMs - currentActionMs);
+    s32 maxEditMs = 80000 - (totalMs - currentActionMs);
     bool isOverLimit = m_editingDuration > maxEditMs;
     s32 digits[5] = { m_editingDuration/10000%10, m_editingDuration/1000%10, m_editingDuration/100%10, m_editingDuration/10%10, m_editingDuration%10 };
     s32 digitW = 30, gap = 8;
@@ -575,7 +575,7 @@ bool MacroEditGui::handleDurationEditInput(u64 keysDown) {
         s32 divisor = 1;
         for (int i = 0; i < 4 - m_editDigitIndex; i++) divisor *= 10;
         s32 digit = (m_editingDuration / divisor) % 10;
-        s32 maxDigit = (m_editDigitIndex == 0) ? 2 : 9;
+        s32 maxDigit = (m_editDigitIndex == 0) ? 8 : 9;
         digit = (digit + 1) % (maxDigit + 1);
         m_editingDuration = m_editingDuration - ((m_editingDuration / divisor) % 10) * divisor + digit * divisor;
         return true;
@@ -584,7 +584,7 @@ bool MacroEditGui::handleDurationEditInput(u64 keysDown) {
         s32 divisor = 1;
         for (int i = 0; i < 4 - m_editDigitIndex; i++) divisor *= 10;
         s32 digit = (m_editingDuration / divisor) % 10;
-        s32 maxDigit = (m_editDigitIndex == 0) ? 2 : 9;
+        s32 maxDigit = (m_editDigitIndex == 0) ? 8 : 9;
         digit = (digit + maxDigit) % (maxDigit + 1);
         m_editingDuration = m_editingDuration - ((m_editingDuration / divisor) % 10) * divisor + digit * divisor;
         return true;
@@ -592,7 +592,7 @@ bool MacroEditGui::handleDurationEditInput(u64 keysDown) {
     if (keysDown & HidNpadButton_Plus) {
         s32 currentActionMs = actions[m_menuSelStart].duration;
         s32 totalMs = MacroData::getBasicInfo().durationMs;
-        s32 maxEditMs = 30000 - (totalMs - currentActionMs);
+        s32 maxEditMs = 80000 - (totalMs - currentActionMs);
         if (m_editingDuration > maxEditMs) return true;
         MacroData::setActionDuration(m_menuSelStart, m_menuSelEnd, m_editingDuration);
         m_durationEditMode = false;

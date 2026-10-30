@@ -110,7 +110,7 @@ void RecordingGui::update() {
     }
     
     // 超时检测
-    if (elapsed_ms > 30000) {
+    if (elapsed_ms > 80000) {
         g_recordMessage = "录制超时";
         MacroSampler::Cancel();
         exitRecording();
