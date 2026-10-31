@@ -1,37 +1,17 @@
 {
-  "version": "v1.5.6",
+  "version": "v1.5.8",
   "changelog": {
     "CN": [
-      "宏商店的服务器下载链接，为提高安全性，进行了更换",
-      "1.55版本的用户请尽快更新至1.56，旧版本将无法下载",
-      "优化ovl内存管理，现在不会再因为ovlloader为4MB而导致崩溃",
-      "解决了播放宏时（无摇杆数据的宏），若用户手动输入摇杆而导致无法自动回中的问题",
-      "系统模块的内存占用临时提高到550KB，下版本会重写录制与播放算法，支持更长时间的宏，并将内存占用降回300KB左右",
-      "本地录制的宏默认命名格式修改为 “日期_时_分_秒”",
-      "宏的管理界面UI重新设计",
-      "宏的详情介绍区域现在支持滚动效果",
-      "删除某个宏文件后，回退到游戏列表界面时，现在会正常刷新游戏的宏数量",
-      "ovl的主界面的切换配置选项，现在右边会直接显示当前使用的配置",
-      "宏商店的宏列表界面右下角新增一个网页商店选项",
-      "宏商店宏的详情界面删除文件路径文本，现在显示为已下载次数",
-      "宏商店宏的详情界面会检测并提示当前宏是否已安装",
-      "宏商店现在会屏蔽服务器有记录，但是宏数量为0的游戏"
+      "修复与 SaltyNX、Horizon-OC 的冲突崩溃问题",
+      "崩溃原因是系统服务克隆数耗尽，虽然通过改成不克隆直连服务解决了崩溃",
+      "但是按照以往版本的经历，这样做会和极个别游戏发生因为系统服务会话数耗尽引起崩溃的问题",
+      "只能说在不阉割核心功能的前提，将就用吧"
     ],
     "EN": [
-      "The macro store server download link has been changed to improve security",
-      "Users on version 1.55 are advised to update to 1.56 as soon as possible, older versions will no longer be able to download",
-      "Optimized OVL memory management, crashes caused by ovlloader being set to 4MB will no longer occur",
-      "Fixed an issue where, when playing a macro (without joystick data), manual joystick input by the user would prevent automatic centering",
-      "The system module memory usage has been temporarily increased to 550KB, the next version will rewrite the recording and playback algorithms to support longer macros and reduce memory usage back to around 300KB",
-      "The default naming format for locally recorded macros has been changed to “date_hour_minute_second”",
-      "The macro management UI has been redesigned",
-      "The macro detail description area now supports scrolling",
-      "After deleting a macro file, returning to the game list screen will now correctly refresh the macro count for that game",
-      "In the OVL main interface, the configuration switch option now directly displays the currently active configuration on the right side",
-      "A new web store option has been added to the bottom-right corner of the macro store macro list screen",
-      "In the macro store macro detail screen, the file path text has been removed and is now replaced with the download count",
-      "The macro store macro detail screen now detects and indicates whether the current macro is already installed",
-      "The macro store now hides games that have server records but a macro count of 0"
+      "Fixed crashes caused by conflicts with SaltyNX and Horizon-OC.",
+      "The crashes were caused by exhausting the system service’s capacity for cloned sessions. Switching to direct service connections without cloning resolved the crashes.",
+      "However, based on experience with previous versions, this approach may cause crashes in a small number of games due to system service session limits being reached.",
+      "For now, this is a compromise we’ll have to live with to preserve the core functionality."
     ]
   }
 }
