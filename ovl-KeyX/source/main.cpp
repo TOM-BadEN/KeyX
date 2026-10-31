@@ -48,7 +48,14 @@ public:
         LanguageManager::initialize();                                // 初始化语言系统
         setExit();                                                    // 退出set服务
 
-        // pdmqry服务会话数量限制，用这个方法可以绕开限制，以防和别的插件或者游戏发生冲突引发崩溃
+        // 直接持有 pdm:qry 原始连接，供现有焦点检测使用，退出时由 pdmqryExit() 释放。
+        // 原克隆方案用于缓解服务入口的会话名额限制；在固件 23.0.1 与 SaltyNX、Horizon-OC 共存测试中，
+        // 克隆并替换连接的启动流程会崩溃，改用原始连接后功能及焦点检测正常，因此暂时禁用克隆。
+        // 尚未查明克隆崩溃的具体原因及直接连接的资源限制；以后调整需重新验证插件共存和焦点检测。
+        pdmqryInitialize();
+
+        // 保留完整旧流程供后续排查；若恢复，需同时移除上方直接初始化，避免重复连接初始化。
+        /*
         Result rc = pdmqryInitialize();
         if (R_SUCCEEDED(rc)) {
             Service* pdmqrySrv = pdmqryGetServiceSession();
@@ -57,6 +64,7 @@ public:
             serviceClose(pdmqrySrv);
             memcpy(pdmqrySrv, &pdmqryClone, sizeof(Service));
         }
+        */
         GameMonitor::loadWhitelist();                                 // 加载白名单
         socketInitialize(&socketConfig);
         curl_global_init(CURL_GLOBAL_DEFAULT);
